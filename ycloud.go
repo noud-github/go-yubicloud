@@ -72,7 +72,7 @@ func (s Status) IsError() bool {
 }
 
 var YubiCloudServers = []string{
-	"https://api.yubico.com/wsapi/2.0/verify"
+	"https://api.yubico.com/wsapi/2.0/verify",
 }
 
 type YubiClient struct {
@@ -283,7 +283,7 @@ func (y *YubiClient) Verify(req *VerifyRequest) (*VerifyResponse, error) {
 		signRequest(values, y.apiKey)
 	}
 
-	resp, err := http.PostForm(server, values)
+	resp, err := http.Get(server + "?" + values.Encode())
 
 	if err != nil {
 		return nil, err
