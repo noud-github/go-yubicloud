@@ -10,7 +10,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -72,11 +72,7 @@ func (s Status) IsError() bool {
 }
 
 var YubiCloudServers = []string{
-	"https://api.yubico.com/wsapi/2.0/verify",
-	"https://api2.yubico.com/wsapi/2.0/verify",
-	"https://api3.yubico.com/wsapi/2.0/verify",
-	"https://api4.yubico.com/wsapi/2.0/verify",
-	"https://api5.yubico.com/wsapi/2.0/verify",
+	"https://api.yubico.com/wsapi/2.0/verify"
 }
 
 type YubiClient struct {
@@ -295,7 +291,7 @@ func (y *YubiClient) Verify(req *VerifyRequest) (*VerifyResponse, error) {
 
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
